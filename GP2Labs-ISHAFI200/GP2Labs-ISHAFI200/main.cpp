@@ -17,12 +17,11 @@ const int WINDOW_HEIGHT = 480;
 void InitWindow(int width, int height, bool fullscreen)
 {
 	//Create a window 
-	window = SDL_CreateWindow(
-		"Lab 1",		//window title
+	window = SDL_CreateWindow("Lab 1",		//window title
 		SDL_WINDOWPOS_CENTERED,		//x position, centered
 		SDL_WINDOWPOS_CENTERED,		//y position, centered
 		width,				//width, in pixels
-		height				//height, in pixels
+		height,				//height, in pixels
 		SDL_WINDOW_OPENGL		//flags
 		);
 }
