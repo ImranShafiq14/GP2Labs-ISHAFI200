@@ -54,19 +54,19 @@ bool running = true;
 						1.0f, -1.0f, 0.0f }; //Bottom Right	
 						*/
 
-/*Vertex triangleData[] = { { 0.0f, 1.0f, 0.0f, //x,y,x
+/*Vertex triangleData[] = { { 0.0f, 1.0f, 0.0f, //x,y,z
 						1.0f, 0.0f, 0.0f, 1.0f }, //r,g,b,a
 
 						{ -1.0f, -1.0f, 0.0f, //x,y,z
 						0.0f, 1.0f, 0.0f, 1.0f }, //r,g,b,a
 
-						{ 1.0f, -1.0f, 0.0f, //x,y,x
+						{ 1.0f, -1.0f, 0.0f, //x,y,z
 						0.0f, 0.0f, 1.0f, 1.0f } }; //r,g,b,a
 */
 
 
 Vertex triangleData[] = {
-	//Front
+		//Front
 		{ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
 
 		{ -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
@@ -78,6 +78,71 @@ Vertex triangleData[] = {
 		{ -0.5, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
 
 		{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		//Back
+		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+
+		{ -0.5, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		//Left
+		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+
+		{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		{ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+
+		{ -0.5, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		//Right
+		{ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ 0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+
+		{ 0.5, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		//Top
+		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ -0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+
+		{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+
+		{ -0.5, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		//Bottom
+		{ -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+
+		{ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+
+		{ -0.5, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+
+		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
 };
 
 
@@ -213,7 +278,7 @@ void render()
 
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / sizeof(Vertex));
 
-
+	
 	//Make the new VBO active. Repeat here as a sanity check (may have changed since initialisation)
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	//the 3 parameter is now filled out, the pipeline needs to know the size of each vertex 
@@ -226,7 +291,7 @@ void render()
 	glEnableClientState(GL_COLOR_ARRAY);
 
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / sizeof(Vertex));
-
+	
 
 
 	/*
@@ -249,6 +314,7 @@ void render()
 	//Actually draw the triangle, giving the number of vertices provided
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / (3 * sizeof(float)));
 	
+	
 	//Reset using Identity Matrix
 	glLoadIdentity();
 	//Translate to -6.0f on z-axis
@@ -256,7 +322,7 @@ void render()
 	glTranslatef(-1.1f, 0.0f, -6.0f);
 	//Actually draw the triangle, giving the number of vertices provided
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / (3 * sizeof(float)));
-
+	
 
 	//required to swap the front and back buffer
 	SDL_GL_SwapWindow(window);
