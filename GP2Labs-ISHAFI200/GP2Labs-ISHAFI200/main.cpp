@@ -6,9 +6,16 @@
 //header for SDL2 functionality
 #include <gl\glew.h>
 #include <SDL.h>
-
 #include <SDL_opengl.h>
 #include <gl\GLU.h>
+
+//maths headers
+#include <glm/glm.hpp>
+using glm::mat4;
+using glm::vec3;
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "../assets";
@@ -26,6 +33,10 @@ SDL_GLContext glcontext = NULL;
 
 GLuint shaderProgram = 0;
 
+//matrices
+mat4 viewMatrix;
+mat4 projMatrix;
+mat4 worldMatrix;
 
 //Triangle 1 Vetex positions
 //Triangle 1 Vertex 1
@@ -192,13 +203,10 @@ void CleanUp()
 //Function to initialise OpenGL
 void initOpenGL()
 {
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-
-
+	
 	//Create OpenGL Context
 	glcontext = SDL_GL_CreateContext(window);
 	//Something went wrong in creating the context, if it is still NULL
@@ -206,7 +214,6 @@ void initOpenGL()
 	{
 		std::cout << "Error Creating OpenGL Context" << SDL_GetError() << std::endl;
 	}
-
 
 	//Smooth shading
 	glShadeModel(GL_SMOOTH);
@@ -234,8 +241,6 @@ void initOpenGL()
 		/*Problem: glewInit failed, something is seriously wrong*/
 		std::cout << "Error: " << glewGetErrorString(err) << std::endl;
 	}
-
-
 }
 
 //Function to set/reset viewport
@@ -265,12 +270,16 @@ void render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
+	
 	glUseProgram(shaderProgram);
-	//Tell trhe shader that 0 is the position element
+	GLint MVPLocation = glGetUniformLocation(shaderProgram, "MVP");
+	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
+	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+	
+	//Tell the shader that 0 is the position element
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-
+	
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
 }
@@ -315,7 +324,6 @@ void createShader()
 	glDeleteShader(fragmentShaderProgram);
 
 	glBindAttribLocation(shaderProgram, 0, "vertexPosition");
-
 }
 
 
@@ -323,7 +331,11 @@ void createShader()
 //Function to update game state
 void update()
 {
+	projMatrix = glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 
+	viewMatrix = glm::lookAt(vec3(0.0f, 0.0f, 10.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+	worldMatrix = glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, 0.0f));
 }
 
 //Main Method - Entry Point
