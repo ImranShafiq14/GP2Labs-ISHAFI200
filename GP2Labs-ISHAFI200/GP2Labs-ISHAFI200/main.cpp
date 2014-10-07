@@ -265,7 +265,12 @@ void render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-	
+	glUseProgram(shaderProgram);
+	//Tell trhe shader that 0 is the position element
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
 }
@@ -309,6 +314,8 @@ void createShader()
 	glDeleteShader(vertexShaderProgram);
 	glDeleteShader(fragmentShaderProgram);
 
+	glBindAttribLocation(shaderProgram, 0, "vertexPosition");
+
 }
 
 
@@ -349,7 +356,7 @@ int main(int argc, char * arg[])
 				//set our boolean which controls the game loop to false
 				running = false;
 			}
-
+			
 			if (event.type == SDL_KEYDOWN)
 			{
 				//If left key is pressed, move both triangles to the left by a value of 0.1 using their X coordinates
