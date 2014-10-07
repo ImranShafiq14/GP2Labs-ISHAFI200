@@ -7,7 +7,6 @@ GLuint loadShaderFromMemory(const char * pMem, SHADER_TYPE shaderType)
 	glShaderSource(program, 1, &pMem, NULL);
 	glCompileShader(program);
 	
-	
 	if (checkForCompilerErrors(program))
 	{
 		return 0;
@@ -35,7 +34,7 @@ GLuint loadShaderFromFile(const std::string& filename, SHADER_TYPE shaderType)
 		unsigned long len = file.tellg();
 		file.seekg(std::ios::beg);
 
-		if (len = 0)
+		if (len == 0)
 		{
 			std::cout << "File has no comments " << std::endl;
 			return 0;

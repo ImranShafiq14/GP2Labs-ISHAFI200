@@ -16,9 +16,11 @@ enum SHADER_TYPE
 
 GLuint loadShaderFromMemory(const char * pMem, SHADER_TYPE shaderType);
 
-GLuint loadShaderFromMemory(const std::string& filename, SHADER_TYPE shaderType);
+GLuint loadShaderFromFile(const std::string& filename, SHADER_TYPE shaderType);
 
-bool checkForComplileErrors(GLuint shaderProgram);
+//bool checkForCompilerErrors(GLuint shaderProgram);
 
 
 #endif
+
+bool checkForCompilerErrors(GLuint shaderProgram);
