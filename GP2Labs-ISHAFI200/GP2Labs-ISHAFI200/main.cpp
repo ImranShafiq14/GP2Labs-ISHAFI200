@@ -171,8 +171,6 @@ GLuint indices[] = {
 };
 
 
-
-
 GLuint triangleVBO;
 GLuint triangleEBO;
 
@@ -270,7 +268,7 @@ void render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-	
+		
 	glUseProgram(shaderProgram);
 	GLint MVPLocation = glGetUniformLocation(shaderProgram, "MVP");
 	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
@@ -356,8 +354,9 @@ int main(int argc, char * arg[])
 	//Set our viewport
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	SDL_Event event;
 	createShader();
+	SDL_Event event;
+	//createShader();
 	while (running)
 	{
 		while (SDL_PollEvent(&event))
