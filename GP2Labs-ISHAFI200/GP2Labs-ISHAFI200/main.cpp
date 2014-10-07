@@ -356,7 +356,6 @@ int main(int argc, char * arg[])
 
 	createShader();
 	SDL_Event event;
-	//createShader();
 	while (running)
 	{
 		while (SDL_PollEvent(&event))
