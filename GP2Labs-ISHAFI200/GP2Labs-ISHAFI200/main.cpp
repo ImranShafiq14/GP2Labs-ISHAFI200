@@ -1,6 +1,7 @@
 //Header files
 #include <iostream>
 #include "Vertex.h"
+#include "Shader.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -22,6 +23,9 @@ const std::string SHADER_PATH = "/shaders";
 SDL_Window * window;
 //SDL GL Context
 SDL_GLContext glcontext = NULL;
+
+GLuint shaderProgram = 0;
+
 
 //Triangle 1 Vetex positions
 //Triangle 1 Vertex 1
@@ -177,6 +181,7 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	glDeleteProgram(shaderProgram);
 	glDeleteBuffers(1, &triangleEBO);
 	glDeleteBuffers(1, &triangleVBO);
 	SDL_GL_DeleteContext(glcontext);
@@ -260,11 +265,7 @@ void render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-
-
-
-
-
+	
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
 }
@@ -287,6 +288,30 @@ void initGeometry()
 	//Copy Index Data to the EBO
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
+
+void createShader()
+{
+	GLuint vertexShaderProgram = 0;
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
+	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
+
+	GLuint fragmentShaderProgram = 0;
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
+
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShaderProgram);
+	glAttachShader(shaderProgram, fragmentShaderProgram);
+	glLinkProgram(shaderProgram);
+	checkForLinkErrors(shaderProgram);
+
+	//now we can delete the VS & FS Programs
+	glDeleteShader(vertexShaderProgram);
+	glDeleteShader(fragmentShaderProgram);
+
+}
+
+
 
 //Function to update game state
 void update()
@@ -313,6 +338,7 @@ int main(int argc, char * arg[])
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	SDL_Event event;
+	createShader();
 	while (running)
 	{
 		while (SDL_PollEvent(&event))
