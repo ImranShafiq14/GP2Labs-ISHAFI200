@@ -90,58 +90,58 @@ bool running = true;
 
 Vertex triangleData[] = {
 	//Front
-		{ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(0.5f, -0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Back
-		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Left
-		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(-0.5f, -0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Right
-		{ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ 0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Top
-		{ -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ -0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(0.5f, 0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Bottom
-		{ -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
+		{ vec3(-0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Right
+		{ vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 };
 
 GLuint indices[] = {
@@ -280,6 +280,8 @@ void render()
 	//Tell the shader that 0 is the position element
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
