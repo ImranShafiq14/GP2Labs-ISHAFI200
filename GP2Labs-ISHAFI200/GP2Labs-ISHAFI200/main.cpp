@@ -73,23 +73,23 @@ const int WINDOW_HEIGHT = 480;
 bool running = true;
 
 /*float triangleData[] = { 0.0f, 1.0f, 0.0f, // Top
-						-1.0f, -1.0f, 0.0f, // Bottom Left
-						1.0f, -1.0f, 0.0f }; //Bottom Right	
-						*/
+-1.0f, -1.0f, 0.0f, // Bottom Left
+1.0f, -1.0f, 0.0f }; //Bottom Right
+*/
 
 /*Vertex triangleData[] = { { 0.0f, 1.0f, 0.0f, //x,y,z
-						1.0f, 0.0f, 0.0f, 1.0f }, //r,g,b,a
+1.0f, 0.0f, 0.0f, 1.0f }, //r,g,b,a
 
-						{ -1.0f, -1.0f, 0.0f, //x,y,z
-						0.0f, 1.0f, 0.0f, 1.0f }, //r,g,b,a
+{ -1.0f, -1.0f, 0.0f, //x,y,z
+0.0f, 1.0f, 0.0f, 1.0f }, //r,g,b,a
 
-						{ 1.0f, -1.0f, 0.0f, //x,y,z
-						0.0f, 0.0f, 1.0f, 1.0f } }; //r,g,b,a
+{ 1.0f, -1.0f, 0.0f, //x,y,z
+0.0f, 0.0f, 1.0f, 1.0f } }; //r,g,b,a
 */
 
 
 Vertex triangleData[] = {
-		//Front
+	//Front
 		{ -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f, 1.0f }, //Top Left
 
 		{ -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f }, //Bottom Left
@@ -145,34 +145,35 @@ Vertex triangleData[] = {
 };
 
 GLuint indices[] = {
-		//Front
-		0, 1, 2,
-		0, 3, 2,
+	//Front
+	0, 1, 2,
+	0, 3, 2,
 
-		//Left
-		4, 5, 1,
-		4, 1, 0,
+	//Left
+	4, 5, 1,
+	4, 1, 0,
 
-		//Right
-		3, 7, 2,
-		7, 6, 2,
+	//Right
+	3, 7, 2,
+	7, 6, 2,
 
-		//Bottom
-		1, 5, 2,
-		6, 2, 1,
+	//Bottom
+	1, 5, 2,
+	6, 2, 1,
 
-		//Top
-		5, 0, 7,
-		5, 7, 3,
+	//Top
+	5, 0, 7,
+	5, 7, 3,
 
-		//Back
-		4, 5, 6,
-		4, 7, 6
+	//Back
+	4, 5, 6,
+	4, 7, 6
 };
 
 
 GLuint triangleVBO;
 GLuint triangleEBO;
+GLuint VAO;
 
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
@@ -193,6 +194,7 @@ void CleanUp()
 	glDeleteProgram(shaderProgram);
 	glDeleteBuffers(1, &triangleEBO);
 	glDeleteBuffers(1, &triangleVBO);
+	glDeleteVertexArrays(1, &VAO);
 	SDL_GL_DeleteContext(glcontext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -204,7 +206,7 @@ void initOpenGL()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	
+
 	//Create OpenGL Context
 	glcontext = SDL_GL_CreateContext(window);
 	//Something went wrong in creating the context, if it is still NULL
@@ -268,16 +270,17 @@ void render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-		
+	glBindVertexArray(VAO);
+
 	glUseProgram(shaderProgram);
 	GLint MVPLocation = glGetUniformLocation(shaderProgram, "MVP");
 	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
 	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
-	
+
 	//Tell the shader that 0 is the position element
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
 }
@@ -285,6 +288,9 @@ void render()
 
 void initGeometry()
 {
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	
 	//Create buffer
 	glGenBuffers(1, &triangleVBO);
 	//Make the new VBO active
@@ -366,7 +372,7 @@ int main(int argc, char * arg[])
 				//set our boolean which controls the game loop to false
 				running = false;
 			}
-			
+
 			if (event.type == SDL_KEYDOWN)
 			{
 				//If left key is pressed, move both triangles to the left by a value of 0.1 using their X coordinates
@@ -430,10 +436,11 @@ int main(int argc, char * arg[])
 		update();
 		render();
 	}
-	
+
 	CleanUp();
 	return 0;
 }
+
 
 
 
