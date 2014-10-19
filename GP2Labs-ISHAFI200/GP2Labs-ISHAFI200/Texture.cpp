@@ -10,18 +10,18 @@ GLuint loadTextureFromFile(const std::string& filename)
 		std::cout << "Can't Load image " << filename << " " << IMG_GetError();
 		return textureID;
 	}
-	GLint nOfColors = surface->format->BytesPerPixel;
+	GLint nOfColors = imageSurface->format->BytesPerPixel;
 	GLenum textureFormat = GL_RGB;
 	if(nOfColors == 4) //contains an alpha channel
 	{
-		if (surface->format->Rmask == 0x000000ff)
+		if (imageSurface->format->Rmask == 0x000000ff)
 			textureFormat = GL_RGBA;
 		else
 			textureFormat = GL_BGRA;
 	}
 	else if (nOfColors == 3) //no alpha channel
 	{
-		if (surface->format->Rmask == 0x000000ff)
+		if (imageSurface->format->Rmask == 0x000000ff)
 			textureFormat = GL_RGB;
 		else
 			textureFormat = GL_BGR;
@@ -34,7 +34,7 @@ GLuint loadTextureFromFile(const std::string& filename)
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, surface->w, surface->h, 0, textureFormat, GL_UNSIGNED_BYTE, surface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSurface->w, imageSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, imageSurface->pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
