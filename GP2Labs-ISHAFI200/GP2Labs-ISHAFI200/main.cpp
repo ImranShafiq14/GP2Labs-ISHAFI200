@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Vertex.h"
 #include "Shader.h"
+#include "Texture.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -18,12 +19,13 @@ using glm::vec3;
 #include <glm/gtc/type_ptr.hpp>
 
 #ifdef _DEBUG && WIN32
-const std::string ASSET_PATH = "../assets";
+const std::string ASSET_PATH = "assets";
 #else
 const std::string ASSET_PATH = "assets";
 #endif
 
 const std::string SHADER_PATH = "/shaders";
+const std::string TEXTURE_PATH = "/textures";
 
 //Global variables go here 
 //Pointer to our SDL Windows
@@ -90,58 +92,58 @@ bool running = true;
 
 Vertex triangleData[] = {
 	//Front
-		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(-0.5f, 0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(-0.5f, -0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(0.5f, -0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(0.5f, -0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(0.5f, 0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Back
-		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Left
-		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(-0.5f, -0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(-0.5f, -0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(-0.5f, 0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Right
-		{ vec3(0.5f, 0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(0.5f, 0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(0.5f, -0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Top
-		{ vec3(-0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(-0.5f, 0.5f, -0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(-0.5f, 0.5f, 0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(-0.5f, 0.5f, 0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(0.5f, 0.5f, 0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(0.5f, 0.5f, 0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(0.5f, 0.5f, -0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(0.5f, 0.5f, -0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 
 		//Bottom
-		{ vec3(-0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
+		{ vec3(-0.5f, -0.5f, 0.5f), vec2(0.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Left
 
-		{ vec3(-0.5f, -0.5f, -0.5f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
+		{ vec3(-0.5f, -0.5f, -0.5f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 0.0f, 1.0f) }, //Bottom Left
 
-		{ vec3(0.5f, -0.5f, -0.5f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
+		{ vec3(0.5f, -0.5f, -0.5f), vec2(1.0f, 1.0f), vec4(0.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
 
-		{ vec3(0.5f, -0.5f, 0.5f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
+		{ vec3(0.5f, -0.5f, 0.5f), vec2(1.0f, 0.0f), vec4(1.0f, 0.0f, 1.0f, 1.0f) }, //Top Right
 };
 
 GLuint indices[] = {
@@ -174,6 +176,7 @@ GLuint indices[] = {
 GLuint triangleVBO;
 GLuint triangleEBO;
 GLuint VAO;
+GLuint texture = 0;
 
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
@@ -191,6 +194,7 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	glDeleteTextures(1, &texture);
 	glDeleteProgram(shaderProgram);
 	glDeleteBuffers(1, &triangleEBO);
 	glDeleteBuffers(1, &triangleVBO);
@@ -277,11 +281,19 @@ void render()
 	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
 	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
+	GLuint texture0Location = glGetUniformLocation(shaderProgram, "texture0");
+	glActiveTexture(GL_TEXTURE);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(texture0Location, 0);
+
 	//Tell the shader that 0 is the position element
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec2)));
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	SDL_GL_SwapWindow(window);
@@ -292,7 +304,7 @@ void initGeometry()
 {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	
+
 	//Create buffer
 	glGenBuffers(1, &triangleVBO);
 	//Make the new VBO active
@@ -312,11 +324,11 @@ void initGeometry()
 void createShader()
 {
 	GLuint vertexShaderProgram = 0;
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
 	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
 
 	GLuint fragmentShaderProgram = 0;
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
 	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
 
 	shaderProgram = glCreateProgram();
@@ -330,8 +342,15 @@ void createShader()
 	glDeleteShader(fragmentShaderProgram);
 
 	glBindAttribLocation(shaderProgram, 0, "vertexPosition");
+	glBindAttribLocation(shaderProgram, 1, "vertexTexCoords");
+	glBindAttribLocation(shaderProgram, 2, "vertexColour");
 }
 
+void createTexture()
+{
+	std::string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
+	texture = loadTextureFromFile(texturePath);
+}
 
 
 //Function to update game state
@@ -363,6 +382,7 @@ int main(int argc, char * arg[])
 	setViewport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	createShader();
+	createTexture();
 	SDL_Event event;
 	while (running)
 	{
@@ -442,6 +462,7 @@ int main(int argc, char * arg[])
 	CleanUp();
 	return 0;
 }
+
 
 
 
