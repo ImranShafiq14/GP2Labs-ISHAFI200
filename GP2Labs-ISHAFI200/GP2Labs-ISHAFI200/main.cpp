@@ -27,6 +27,7 @@ const std::string ASSET_PATH = "assets";
 
 const std::string SHADER_PATH = "/shaders";
 const std::string TEXTURE_PATH = "/textures";
+const std::string FONT_PATH = "/fonts";
 
 //Global variables go here 
 //Pointer to our SDL Windows
@@ -178,6 +179,7 @@ GLuint triangleVBO;
 GLuint triangleEBO;
 GLuint VAO;
 GLuint texture = 0;
+GLuint fontTexture = 0;
 
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
@@ -195,7 +197,9 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
+	glDeleteTextures(1, &fontTexture);
 	glDeleteTextures(1, &texture);
+	//glDeleteTextures(1, &fontTexture);
 	glDeleteProgram(shaderProgram);
 	glDeleteBuffers(1, &triangleEBO);
 	glDeleteBuffers(1, &triangleVBO);
@@ -273,6 +277,9 @@ void render()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
 	glBindVertexArray(VAO);
@@ -284,7 +291,7 @@ void render()
 
 	GLuint texture0Location = glGetUniformLocation(shaderProgram, "texture0");
 	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, fontTexture);
 	glUniform1i(texture0Location, 0);
 
 	//Tell the shader that 0 is the position element
@@ -353,6 +360,11 @@ void createTexture()
 	texture = loadTextureFromFile(texturePath);
 }
 
+void createFontTexture()
+{
+	std::string fontPath = ASSET_PATH + FONT_PATH + "/OratorStd.otf";
+	fontTexture = loadTextureFromFont(fontPath, 64, "Hello!");
+}
 
 //Function to update game state
 void update()
@@ -388,6 +400,7 @@ int main(int argc, char * arg[])
 
 	createShader();
 	createTexture();
+	createFontTexture();
 	SDL_Event event;
 	while (running)
 	{
