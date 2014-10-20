@@ -9,6 +9,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <gl\GLU.h>
+#include <SDL_ttf.h>
 
 //maths headers
 #include <glm/glm.hpp>
@@ -371,6 +372,10 @@ int main(int argc, char * arg[])
 	{
 		std::cout << "ERROR SDL_Init" << SDL_GetError() << std::endl;
 		return -1;
+	}
+	if (TTF_Init() == -1)
+	{
+		std::cout << "ERROR TFF_Init: " << TTF_GetError();
 	}
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, false);
 
