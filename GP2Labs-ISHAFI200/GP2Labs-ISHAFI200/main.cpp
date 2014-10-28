@@ -182,14 +182,6 @@ GLuint indices[] = {
 	4, 7, 6
 };
 
-/*
-GLuint triangleVBO;
-GLuint triangleEBO;
-GLuint VAO;
-GLuint texture = 0;
-GLuint fontTexture = 0;
-*/
-
 //2D
 GLuint VBO2d;
 GLuint EBO2d;
@@ -351,104 +343,10 @@ void render()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-	glBindVertexArray(VAO);
-
-	glUseProgram(shaderProgram);
-	GLint MVPLocation = glGetUniformLocation(shaderProgram, "MVP");
-	mat4 MVP = projMatrix*viewMatrix*worldMatrix;
-	glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
-
-	GLuint texture0Location = glGetUniformLocation(shaderProgram, "texture0");
-	glActiveTexture(GL_TEXTURE);
-	glBindTexture(GL_TEXTURE_2D, fontTexture);
-	glUniform1i(texture0Location, 0);
-
-	//Tell the shader that 0 is the position element
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
-
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec2)));
-
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	*/
-
 	render2D();
 	render3D();
 	SDL_GL_SwapWindow(window);
 }
-
-
-/*void initGeometry()
-{
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	//Create buffer
-	glGenBuffers(1, &triangleVBO);
-	//Make the new VBO active
-	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
-	//Copy Vertex Data to VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleData), triangleData, GL_STATIC_DRAW);
-
-
-	//Create buffer
-	glGenBuffers(1, &triangleEBO);
-	//Make the new EBO active
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-	//Copy Index Data to the EBO
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-}*/
-
-/*void initGeometryFromTexture(GLuint textureID)
-{
-	int width, height;
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
-	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-
-	Vertex spriteData[] = {
-			{ vec3(0.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f) }, //Top Left
-
-			{ vec3(0.0f, height, 0.0f), vec2(0.0f, 1.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Left
-
-			{ vec3(width, height, 0.0f), vec2(1.0f, 1.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f) }, //Bottom Right
-
-			{ vec3(width, 0.0f, 0.0f), vec2(1.0f, 0.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f) } //Top Right
-	};
-
-	GLuint spriteIndices[] = {
-		0, 1, 2,
-		0, 3, 2,
-	};
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &triangleVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, triangleVBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), spriteData, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &triangleEBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, triangleEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(int), spriteIndices, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec2)));
-}*/
 
 void create2DScene()
 {
@@ -579,43 +477,6 @@ void create3DScene()
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec2)));
 }
-
-/*void createShader()
-{
-	GLuint vertexShaderProgram = 0;
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/textureVS.glsl";
-	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
-
-	GLuint fragmentShaderProgram = 0;
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/textureFS.glsl";
-	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
-
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShaderProgram);
-	glAttachShader(shaderProgram, fragmentShaderProgram);
-	glLinkProgram(shaderProgram);
-	checkForLinkErrors(shaderProgram);
-
-	//now we can delete the VS & FS Programs
-	glDeleteShader(vertexShaderProgram);
-	glDeleteShader(fragmentShaderProgram);
-
-	glBindAttribLocation(shaderProgram, 0, "vertexPosition");
-	glBindAttribLocation(shaderProgram, 1, "vertexTexCoords");
-	glBindAttribLocation(shaderProgram, 2, "vertexColour");
-}*/
-
-/*void createTexture()
-{
-	std::string texturePath = ASSET_PATH + TEXTURE_PATH + "/texture.png";
-	texture = loadTextureFromFile(texturePath);
-}*/
-
-/*void createFontTexture()
-{
-	std::string fontPath = ASSET_PATH + FONT_PATH + "/OratorStd.otf";
-	fontTexture = loadTextureFromFont(fontPath, 64, "Hello!");
-}*/
 
 void Update2D()
 {
