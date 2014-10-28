@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "Component.h"
+
 
 GameObject::GameObject()
 {
@@ -52,4 +54,15 @@ void GameObject::destroy()
 		}
 	}
 }
+
+void GameObject::addComponent(Component * component)
+{
+	m_Components.push_back(component);
+}
+
+const std::string& GameObject::getName()
+{
+	return m_Name;
+}
+
 

@@ -4,11 +4,12 @@
 Component::Component()
 {
 	m_Type = "Component";
+	m_Active = true;
 }
 
 Component::~Component()
 {
-	m_Active = true;
+	
 }
 
 void Component::init()
