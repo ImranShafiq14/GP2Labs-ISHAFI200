@@ -12,7 +12,7 @@ class GameObject
 {
 public:
 	GameObject();
-	virtual ~GameObject();
+	~GameObject();
 	
 	void init();
 	void update();
