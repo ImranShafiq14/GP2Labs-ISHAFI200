@@ -1,4 +1,6 @@
 #include "Camera.h"
+#include "GameObject.h"
+#include "Transform.h"
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
@@ -60,6 +62,7 @@ mat4 Camera::getProjectMatrix()
 
 void Camera::update()
 {
+	m_Position = m_Parent->getTransform()->getPosition();
 	m_ViewMatrix = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	m_ProjectionMatrix = glm::ortho(0.0f, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT, 0.0f, 0.1f, 100.0f);
 }

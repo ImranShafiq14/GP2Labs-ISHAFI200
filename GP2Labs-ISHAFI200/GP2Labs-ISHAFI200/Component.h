@@ -3,6 +3,8 @@
 
 #include <string>
 
+class GameObject;
+
 class Component
 {
 	public:
@@ -15,9 +17,13 @@ class Component
 		const std::string& getType();
 		void toggleActive();
 		bool isActive();
+
+		void setParent(GameObject * parent);
+		GameObject * getParent();
 	protected:
 		std::string m_Type;
 		bool m_Active;
+		GameObject *m_Parent;
 	private:
 };
 
