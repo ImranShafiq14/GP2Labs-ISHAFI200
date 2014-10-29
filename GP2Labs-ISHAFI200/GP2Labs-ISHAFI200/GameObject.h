@@ -7,6 +7,10 @@
 using namespace std;
 
 class Component;
+class Mesh;
+class Material;
+class Camera;
+class Transform;
 
 class GameObject
 {
@@ -22,12 +26,29 @@ public:
 	const std::string& getName();
 	void setName(std::string& name);
 	void addComponent(Component * component);
+
+	Mesh * getMesh();
+	Material * getMaterial();
+	Camera * getCamera();
+	Transform * getTransform();
+	Component * getComponent();
+
+	void setMesh(Mesh * mesh);
+	void setMaterial(Material * material);
+	void setCamera(Camera * camera);
+	void setTransform(Transform * transform);
 protected:
 	//std::string m_Type;
 	//bool m_Active;
 private:
 	std::string m_Name;
 	vector<Component*> m_Components;
+	Mesh *m_Mesh;
+	Material *m_Material;
+	Camera *m_Camera;
+	Transform *m_Transform;
+	Component *m_Component;
+
 };
 
 
