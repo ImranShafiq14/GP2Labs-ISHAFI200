@@ -19,6 +19,14 @@ using glm::vec3;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <vector>
+#include "GameObject.h"
+#include "Material.h"
+#include "Mesh.h"
+#include "Camera.h"
+#include "Transform.h"
+#include "Component.h"
+
 #ifdef _DEBUG && WIN32
 const std::string ASSET_PATH = "assets";
 #else
@@ -196,6 +204,8 @@ GLuint VAO3d;
 GLuint texture = 0;
 GLuint fontTexture = 0;
 
+vector<GameObject*> displayList;
+
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
 {
@@ -231,8 +241,24 @@ void CleanUp3D()
 //Used to cleanup once we exit
 void CleanUp()
 {
-	CleanUp2D();
-	CleanUp3D();
+	//CleanUp2D();
+	//CleanUp3D();
+
+	auto iter = displayList.begin();
+	while (iter != displayList.end())
+	{
+		(*iter)->destroy();
+		if ((*iter))
+		{
+			delete(*iter);
+			(*iter) = NULL;
+			iter = displayList.erase(iter);
+		}
+		else
+		{
+			iter++;
+		}
+	}
 	SDL_GL_DeleteContext(glcontext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -343,8 +369,29 @@ void render()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render2D();
-	render3D();
+	//render2D();
+	//render3D();
+
+	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
+	{
+		(*iter)->render();
+		Mesh * currentMesh = (*iter)->getMesh();
+		Transform * currentTransform = (*iter)->getTransform();
+		Material * currentMaterial = (*iter)->getMaterial();
+
+		if (currentMesh && currentMaterial && currentTransform)
+		{
+			currentMesh->Bind();
+			currentMaterial->Bind();
+
+			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
+			//will sort out once we have camera
+			mat4 MVP = mat4();
+			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+
+			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+		}
+	}
 	SDL_GL_SwapWindow(window);
 }
 
@@ -500,8 +547,20 @@ void Update3D()
 void update()
 {
 	//projMatrix = glm::perspective(45.0f, (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
-	Update2D();
-	Update3D();
+	//Update2D();
+	//Update3D();
+	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
+	{
+		(*iter)->update();
+	}
+}
+
+void initialise()
+{
+	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
+	{
+		(*iter)->init();
+	}
 }
 
 //Main Method - Entry Point
@@ -531,8 +590,11 @@ int main(int argc, char * arg[])
 	//createFontTexture();
 	//initGeometryFromTexture(fontTexture);
 	
-	create2DScene();
-	create3DScene();
+	//create2DScene();
+	//create3DScene();
+
+	initialise();
+
 	SDL_Event event;
 	while (running)
 	{
