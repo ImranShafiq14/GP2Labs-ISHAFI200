@@ -12,8 +12,8 @@ public:
 
 	void init();
 	void destroy();
-	void copyVertexData(int count, int stride, void** data);
-	void copyIndexData(int count, int stride, void** data);
+	void copyVertexData(int count, int stride, void **data);
+	void copyIndexData(int count, int stride, void **data);
 	void Bind();
 	int getVertexCount();
 	int getIndexCount();

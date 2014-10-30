@@ -34,8 +34,8 @@ void Mesh::init()
 
 void Mesh::destroy()
 {
-	glDeleteBuffers(1, &m_EBO);
 	glDeleteBuffers(1, &m_VBO);
+	glDeleteBuffers(1, &m_EBO);
 	glDeleteVertexArrays(1, &m_VAO);
 }
 
@@ -44,18 +44,20 @@ void Mesh::Bind()
 	glBindVertexArray(m_VAO);
 }
 
-void Mesh::copyVertexData(int count, int stride, void** data)
+void Mesh::copyVertexData(int count, int stride, void **data)
 {
+	m_VertexCount = count;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, count*stride, data, GL_STATIC_DRAW);
-	m_VertexCount = count;
+	//m_VertexCount = count;
 }
 
-void Mesh::copyIndexData(int count, int stride, void** data)
+void Mesh::copyIndexData(int count, int stride, void **data)
 {
+	m_IndexCount = count;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count*stride, data, GL_STATIC_DRAW);
-	m_IndexCount = count;
+	//m_IndexCount = count;
 }
 
 int Mesh::getIndexCount()

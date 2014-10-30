@@ -17,13 +17,34 @@ public:
 	Camera();
 	~Camera();
 
-	void setPosition(vec3 position);
-	void setLookAt(vec3 lookAt);
-	void setUp(vec3 up);
-	void setFOV(float fov);
-	void setAspectRatio(float aspectRatio);
-	void setNearClip(float nearClip);
-	void setFarClip(float farClip);
+	void setPosition(float x, float y, float z)
+	{
+		m_Position = vec3(x, y, z);
+	}
+	void setLookAt(float x, float y, float z)
+	{
+		m_LookAt = vec3(x, y, z);
+	}
+	void setUp(float x, float y, float z)
+	{
+		m_Up = vec3(x, y, z);
+	}
+	void setFOV(float FOV)
+	{
+		m_FOV = FOV;
+	}
+	void setAspectRatio(float aspectRatio)
+	{
+		m_AspectRatio = aspectRatio;
+	}
+	void setNearClip(float nearClip)
+	{
+		m_NearClip = nearClip;
+	}
+	void setFarClip(float farClip)
+	{
+		m_FarClip = farClip;
+	}
 	mat4 getViewMatrix();
 	mat4 getProjectMatrix();
 	void update();

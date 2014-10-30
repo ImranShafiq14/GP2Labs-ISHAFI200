@@ -205,6 +205,7 @@ GLuint texture = 0;
 GLuint fontTexture = 0;
 
 vector<GameObject*> displayList;
+GameObject *mainCamera;
 
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
@@ -385,8 +386,8 @@ void render()
 			currentMaterial->Bind();
 
 			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
-			//will sort out once we have camera
-			mat4 MVP = mat4();
+			Camera *cam = mainCamera->getCamera();
+			mat4 MVP = cam->getViewMatrix()*cam->getProjectMatrix()*currentTransform->getModel();
 			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
 			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
@@ -557,10 +558,50 @@ void update()
 
 void initialise()
 {
+	mainCamera = new GameObject();
+
+	Transform *t = new Transform();
+	t->setPosition(0.0f, 0.0f, 2.0f);
+	mainCamera->setTransform(t);
+
+	Camera * c = new Camera();
+	//c->setPosition(0.0f, 0.0f, 0.0f);
+	c->setLookAt(0.0f, 0.0f, 0.0f);
+	c->setUp(0.0f, 1.0f, 0.0f);
+	c->setFOV(45.0f);
+	c->setAspectRatio(16.0f / 9.0f);
+	c->setNearClip(0.1f);
+	c->setFarClip(100.0f);
+	mainCamera->setCamera(c);
+	displayList.push_back(mainCamera);
+
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->init();
 	}
+
+	GameObject * cube = new GameObject();
+
+	Transform *transform = new Transform();
+	transform->setPosition(0.0f, 0.0f, 2.0f);
+	cube->setTransform(transform);
+
+	Material * material = new Material();
+	material->loadShader("simpleVS.glsl", "simpleFS.glsl");
+	cube->setMaterial(material);
+
+	Mesh * mesh = new Mesh();
+	cube->setMesh(mesh);
+
+	displayList.push_back(cube);
+	
+	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
+	{
+		(*iter)->init();
+	}
+
+	mesh->copyVertexData(8, sizeof(Vertex), triangleData);
+	mesh->copyIndexData(36, sizeof(int), indices);
 }
 
 //Main Method - Entry Point

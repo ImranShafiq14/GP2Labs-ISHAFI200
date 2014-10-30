@@ -2,7 +2,7 @@
 
 Transform::Transform()
 {
-
+	
 }
 
 Transform::~Transform()
@@ -41,17 +41,7 @@ vec3 Transform::getRotation()
 	return m_Rotation;
 }
 
-void Transform::setPosition(vec3 position)
+mat4 Transform::getModel()
 {
-	
-}
-
-void Transform::setScale(vec3 scale)
-{
-
-}
-
-void Transform::setRotation(vec3 rotation)
-{
-
+	return m_Model;
 }

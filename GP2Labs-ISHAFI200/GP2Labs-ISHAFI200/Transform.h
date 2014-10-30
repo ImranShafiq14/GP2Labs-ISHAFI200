@@ -24,9 +24,18 @@ public:
 	vec3 getRotation();
 	mat4 getModel();
 
-	void setPosition(vec3 position);
-	void setScale(vec3 scale);
-	void setRotation(vec3 rotation);
+	void setPosition(float x, float y, float z)
+	{
+		m_Position = vec3(x, y, z);
+	}
+	void setScale(float x, float y, float z)
+	{
+		m_Scale = vec3(x, y, z);
+	}
+	void setRotation(float x, float y, float z)
+	{
+		m_Rotation = vec3(x, y, x);
+	}
 protected:
 private:
 	vec3 m_Position;
