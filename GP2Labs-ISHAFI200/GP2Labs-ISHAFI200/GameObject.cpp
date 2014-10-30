@@ -8,7 +8,12 @@
 
 GameObject::GameObject()
 {
-
+	m_Name="GameObject";
+	m_Components.clear();
+	m_Mesh=NULL;
+	m_Material = NULL;
+	m_Camera=NULL;
+	m_Transform=NULL;
 }
 
 GameObject::~GameObject()
@@ -111,4 +116,9 @@ void GameObject::setTransform(Transform * transform)
 Transform * GameObject::getTransform()
 {
 	return m_Transform;
+}
+
+void GameObject::setName(std::string& name)
+{
+	m_Name = name;
 }

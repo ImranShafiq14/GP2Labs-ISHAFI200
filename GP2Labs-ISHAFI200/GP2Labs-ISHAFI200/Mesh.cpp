@@ -3,7 +3,9 @@
 
 Mesh::Mesh()
 {
-
+	m_VAO = 0;
+	m_EBO = 0;
+	m_VBO = 0;
 }
 
 Mesh::~Mesh()

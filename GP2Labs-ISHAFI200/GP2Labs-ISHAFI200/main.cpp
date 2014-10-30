@@ -559,6 +559,7 @@ void update()
 void initialise()
 {
 	mainCamera = new GameObject();
+	mainCamera->setName(std::string("Camera"));
 
 	Transform *t = new Transform();
 	t->setPosition(0.0f, 0.0f, 2.0f);
@@ -575,19 +576,14 @@ void initialise()
 	mainCamera->setCamera(c);
 	displayList.push_back(mainCamera);
 
-	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
-	{
-		(*iter)->init();
-	}
-
 	GameObject * cube = new GameObject();
+	cube->setName(std::string( "Cube"));
 
 	Transform *transform = new Transform();
 	transform->setPosition(0.0f, 0.0f, 2.0f);
 	cube->setTransform(transform);
 
 	Material * material = new Material();
-	material->loadShader("simpleVS.glsl", "simpleFS.glsl");
 	cube->setMaterial(material);
 
 	Mesh * mesh = new Mesh();
@@ -600,8 +596,11 @@ void initialise()
 		(*iter)->init();
 	}
 
-	mesh->copyVertexData(8, sizeof(Vertex), triangleData);
-	mesh->copyIndexData(36, sizeof(int), indices);
+	mesh->copyVertexData(8, sizeof(Vertex), (void**)(triangleData));
+	mesh->copyIndexData(36, sizeof(int), (void**)(indices));
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	material->loadShader(vsPath, fsPath);
 }
 
 //Main Method - Entry Point

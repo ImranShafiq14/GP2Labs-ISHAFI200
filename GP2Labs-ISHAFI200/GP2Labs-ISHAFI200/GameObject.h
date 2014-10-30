@@ -47,7 +47,6 @@ private:
 	Material *m_Material;
 	Camera *m_Camera;
 	Transform *m_Transform;
-	Component *m_Component;
 
 };
 

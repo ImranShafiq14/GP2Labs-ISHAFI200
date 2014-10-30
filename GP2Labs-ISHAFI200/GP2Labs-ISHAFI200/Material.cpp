@@ -3,7 +3,7 @@
 
 Material::Material()
 {
-
+	m_ShaderProgram = -1;
 }
 
 Material::~Material()
