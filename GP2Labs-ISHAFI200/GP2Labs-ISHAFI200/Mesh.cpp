@@ -3,9 +3,11 @@
 
 Mesh::Mesh()
 {
-	m_VAO = 0;
-	m_EBO = 0;
 	m_VBO = 0;
+	m_EBO = 0;
+	m_VAO = 0;
+	m_IndexCount = 0;
+	m_VertexCount = 0;
 }
 
 Mesh::~Mesh()
@@ -44,6 +46,8 @@ void Mesh::destroy()
 void Mesh::Bind()
 {
 	glBindVertexArray(m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 }
 
 void Mesh::copyVertexData(int count, int stride, void **data)
@@ -51,7 +55,6 @@ void Mesh::copyVertexData(int count, int stride, void **data)
 	m_VertexCount = count;
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, count*stride, data, GL_STATIC_DRAW);
-	//m_VertexCount = count;
 }
 
 void Mesh::copyIndexData(int count, int stride, void **data)
@@ -59,7 +62,6 @@ void Mesh::copyIndexData(int count, int stride, void **data)
 	m_IndexCount = count;
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count*stride, data, GL_STATIC_DRAW);
-	//m_IndexCount = count;
 }
 
 int Mesh::getIndexCount()

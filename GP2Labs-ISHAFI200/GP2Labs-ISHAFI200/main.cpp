@@ -28,7 +28,7 @@ using glm::vec3;
 #include "Component.h"
 
 #ifdef _DEBUG && WIN32
-const std::string ASSET_PATH = "assets";
+const std::string ASSET_PATH = "../assets";
 #else
 const std::string ASSET_PATH = "assets";
 #endif
@@ -260,6 +260,8 @@ void CleanUp()
 			iter++;
 		}
 	}
+	displayList.clear();
+
 	SDL_GL_DeleteContext(glcontext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -388,6 +390,7 @@ void render()
 			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
 			Camera *cam = mainCamera->getCamera();
 			mat4 MVP = cam->getViewMatrix()*cam->getProjectMatrix()*currentTransform->getModel();
+			//mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
 			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
 			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
@@ -560,47 +563,44 @@ void initialise()
 {
 	mainCamera = new GameObject();
 	mainCamera->setName(std::string("Camera"));
-
+	
 	Transform *t = new Transform();
-	t->setPosition(0.0f, 0.0f, 2.0f);
+	t->setPosition(0.0f, 0.0f, 10.0f);
 	mainCamera->setTransform(t);
-
+	
 	Camera * c = new Camera();
-	//c->setPosition(0.0f, 0.0f, 0.0f);
-	c->setLookAt(0.0f, 0.0f, 0.0f);
-	c->setUp(0.0f, 1.0f, 0.0f);
 	c->setFOV(45.0f);
 	c->setAspectRatio(16.0f / 9.0f);
 	c->setNearClip(0.1f);
 	c->setFarClip(100.0f);
 	mainCamera->setCamera(c);
 	displayList.push_back(mainCamera);
-
+	
 	GameObject * cube = new GameObject();
-	cube->setName(std::string( "Cube"));
-
+	cube->setName(std::string("Cube"));
+	
 	Transform *transform = new Transform();
-	transform->setPosition(0.0f, 0.0f, 2.0f);
+	transform->setPosition(0.0f, 0.0f, 0.0f);
 	cube->setTransform(transform);
-
+	
 	Material * material = new Material();
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	material->loadShader(vsPath, fsPath);
 	cube->setMaterial(material);
-
+	
 	Mesh * mesh = new Mesh();
 	cube->setMesh(mesh);
-
+	
 	displayList.push_back(cube);
 	
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->init();
 	}
-
+	
 	mesh->copyVertexData(8, sizeof(Vertex), (void**)(triangleData));
 	mesh->copyIndexData(36, sizeof(int), (void**)(indices));
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
-	material->loadShader(vsPath, fsPath);
 }
 
 //Main Method - Entry Point

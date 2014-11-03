@@ -10,7 +10,7 @@ Component::Component()
 
 Component::~Component()
 {
-	
+
 }
 
 void Component::init()
@@ -48,7 +48,7 @@ void Component::setParent(GameObject * parent)
 	m_Parent = parent;
 }
 
-GameObject * Component::getParent()
+void Component::toggleActive()
 {
-	return m_Parent;
+	m_Active != m_Active;
 }

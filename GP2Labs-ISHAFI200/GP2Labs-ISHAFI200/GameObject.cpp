@@ -8,12 +8,11 @@
 
 GameObject::GameObject()
 {
-	m_Name="GameObject";
-	m_Components.clear();
-	m_Mesh=NULL;
+	m_Name = "GameObject";
+	m_Mesh = NULL;
 	m_Material = NULL;
-	m_Camera=NULL;
-	m_Transform=NULL;
+	m_Camera = NULL;
+	m_Transform = NULL;
 }
 
 GameObject::~GameObject()
@@ -33,7 +32,7 @@ void GameObject::update()
 {
 	for (auto iter = m_Components.begin(); iter != m_Components.end(); iter++)
 	{
-		(*iter)->init();
+		(*iter)->update();
 	}
 }
 
@@ -41,7 +40,7 @@ void GameObject::render()
 {
 	for (auto iter = m_Components.begin(); iter != m_Components.end(); iter++)
 	{
-		(*iter)->init();
+		(*iter)->render();
 	}
 }
 
@@ -62,11 +61,18 @@ void GameObject::destroy()
 			iter++;
 		}
 	}
+	m_Components.clear();
 }
 
 void GameObject::addComponent(Component * component)
 {
+	component->setParent(this);
 	m_Components.push_back(component);
+}
+
+void GameObject::setName(std::string& name)
+{
+	m_Name = name;
 }
 
 const std::string& GameObject::getName()
@@ -116,9 +122,4 @@ void GameObject::setTransform(Transform * transform)
 Transform * GameObject::getTransform()
 {
 	return m_Transform;
-}
-
-void GameObject::setName(std::string& name)
-{
-	m_Name = name;
 }

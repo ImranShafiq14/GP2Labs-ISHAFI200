@@ -16,26 +16,17 @@ class Transform : public Component
 public:
 	Transform();
 	~Transform();
-	
+
 	void update();
+
+	void setPosition(float x, float y, float z);
+	void setScale(float x, float y, float z);
+	void setRotation(float x, float y, float z);
 
 	vec3 getPosition();
 	vec3 getScale();
 	vec3 getRotation();
 	mat4 getModel();
-
-	void setPosition(float x, float y, float z)
-	{
-		m_Position = vec3(x, y, z);
-	}
-	void setScale(float x, float y, float z)
-	{
-		m_Scale = vec3(x, y, z);
-	}
-	void setRotation(float x, float y, float z)
-	{
-		m_Rotation = vec3(x, y, x);
-	}
 protected:
 private:
 	vec3 m_Position;

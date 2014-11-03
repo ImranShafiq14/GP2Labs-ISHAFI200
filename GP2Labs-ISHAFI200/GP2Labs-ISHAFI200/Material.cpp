@@ -21,10 +21,12 @@ bool Material::loadShader(const string& vertexShader, const string& fragmentShad
 	GLuint vertexShaderProgram = 0;
 	std::string vsPath = vertexShader;
 	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
+	//vertexShaderProgram = loadShaderFromFile(const_cast<std::string&>(vertexShader), VERTEX_SHADER);
 	
 	GLuint fragmentShaderProgram = 0;
 	std::string fsPath = fragmentShader;
 	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
+	//fragmentShaderProgram = loadShaderFromFile(const_cast<std::string&>(fragmentShader), FRAGMENT_SHADER);
 	
 	m_ShaderProgram = glCreateProgram();
 	glAttachShader(m_ShaderProgram, vertexShaderProgram);
@@ -39,7 +41,7 @@ bool Material::loadShader(const string& vertexShader, const string& fragmentShad
 	glBindAttribLocation(m_ShaderProgram, 0, "vertexPosition");
 	glBindAttribLocation(m_ShaderProgram, 1, "vertexTexCoords");
 	glBindAttribLocation(m_ShaderProgram, 2, "vertexColour");
-
+	
 	return true;
 }
 
