@@ -19,7 +19,7 @@ using glm::vec3;
 #include <glm/gtc/type_ptr.hpp>
 
 #ifdef _DEBUG && WIN32
-const std::string ASSET_PATH = "assets";
+const std::string ASSET_PATH = "../assets";
 #else
 const std::string ASSET_PATH = "assets";
 #endif
