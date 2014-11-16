@@ -70,7 +70,7 @@ void GameObject::addComponent(Component * component)
 	m_Components.push_back(component);
 }
 
-void GameObject::setName(std::string& name)
+void GameObject::setName(const std::string& name)
 {
 	m_Name = name;
 }

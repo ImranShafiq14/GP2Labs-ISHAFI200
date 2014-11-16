@@ -64,5 +64,5 @@ void Camera::update()
 {
 	vec3 position = m_Parent->getTransform()->getPosition();
 	m_ViewMatrix = glm::lookAt(position, m_LookAt, m_Up);
-	m_ProjectionMatrix = glm::ortho(m_FOV, m_AspectRatio, m_NearClip, m_FarClip);
+	m_ProjectionMatrix = glm::perspective(m_FOV, m_AspectRatio, m_NearClip, m_FarClip);
 }

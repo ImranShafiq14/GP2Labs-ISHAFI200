@@ -24,7 +24,7 @@ public:
 	void destroy();
 
 	const std::string& getName();
-	void setName(std::string& name);
+	void setName(const std::string& name);
 	void addComponent(Component * component);
 
 	Mesh * getMesh();

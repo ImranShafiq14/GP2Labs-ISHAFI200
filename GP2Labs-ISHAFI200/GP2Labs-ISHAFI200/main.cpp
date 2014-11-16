@@ -165,9 +165,6 @@ void InitWindow(int width, int height, bool fullscreen)
 //Used to cleanup once we exit
 void CleanUp()
 {
-	//CleanUp2D();
-	//CleanUp3D();
-
 	auto iter = displayList.begin();
 	while (iter != displayList.end())
 	{
@@ -258,9 +255,6 @@ void render()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//render2D();
-	//render3D();
-
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
 		(*iter)->render();
@@ -275,8 +269,7 @@ void render()
 
 			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
 			Camera *cam = mainCamera->getCamera();
-			mat4 MVP = cam->getViewMatrix()*cam->getProjectMatrix()*currentTransform->getModel();
-			//mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
+			mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
 			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 
 			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
@@ -299,7 +292,7 @@ void update()
 void initialise()
 {
 	mainCamera = new GameObject();
-	mainCamera->setName(std::string("Camera"));
+	mainCamera->setName("Camera");
 	
 	Transform *t = new Transform();
 	t->setPosition(0.0f, 0.0f, 10.0f);
@@ -307,14 +300,14 @@ void initialise()
 	
 	Camera * c = new Camera();
 	c->setFOV(45.0f);
-	c->setAspectRatio(16.0f / 9.0f);
+	c->setAspectRatio((float)WINDOW_WIDTH / WINDOW_HEIGHT);
 	c->setNearClip(0.1f);
 	c->setFarClip(100.0f);
 	mainCamera->setCamera(c);
 	displayList.push_back(mainCamera);
 	
 	GameObject * cube = new GameObject();
-	cube->setName(std::string("Cube"));
+	cube->setName("Cube");
 	
 	Transform *transform = new Transform();
 	transform->setPosition(0.0f, 0.0f, 0.0f);
