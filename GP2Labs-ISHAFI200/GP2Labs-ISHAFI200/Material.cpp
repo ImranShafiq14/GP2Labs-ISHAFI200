@@ -3,6 +3,7 @@
 
 Material::Material()
 {
+	m_Type = "Material";
 	m_ShaderProgram = -1;
 }
 

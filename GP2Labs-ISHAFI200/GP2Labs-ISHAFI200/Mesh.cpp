@@ -3,6 +3,7 @@
 
 Mesh::Mesh()
 {
+	m_Type = "Mesh";
 	m_VBO = 0;
 	m_EBO = 0;
 	m_VAO = 0;
