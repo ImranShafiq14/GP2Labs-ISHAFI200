@@ -331,6 +331,19 @@ void initialise()
 	{
 		(*iter)->init();
 	}
+
+	std::string modelPath = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
+	GameObject * go = loadFBXFromFile(modelPath);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+		material->loadShader(vsPath, fsPath);
+		go->getChild(i)->setMaterial(material);
+	}
+	displayList.push_back(go);
 	
 	//mesh->copyVertexData(8, sizeof(Vertex), (void**)(triangleData));
 	//mesh->copyIndexData(36, sizeof(int), (void**)(indices));
