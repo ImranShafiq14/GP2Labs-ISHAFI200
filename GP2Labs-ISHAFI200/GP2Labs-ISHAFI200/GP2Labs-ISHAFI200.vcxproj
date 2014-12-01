@@ -109,6 +109,8 @@
     <None Include="..\assets\shaders\ambientVS.glsl" />
     <None Include="..\assets\shaders\diffuseFS.glsl" />
     <None Include="..\assets\shaders\diffuseVS.glsl" />
+    <None Include="..\assets\shaders\directionalLightTextureFS.glsl" />
+    <None Include="..\assets\shaders\directionalLightTextureVS.glsl" />
     <None Include="..\assets\shaders\specularFS.glsl" />
     <None Include="..\assets\shaders\specularVS.glsl" />
     <None Include="assets\shaders\simpleFS.glsl" />
