@@ -3,6 +3,7 @@
 #include "Vertex.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "FBXLoader.h"
 
 //header for SDL2 functionality
 #include <gl\glew.h>
@@ -36,6 +37,7 @@ const std::string ASSET_PATH = "assets";
 const std::string SHADER_PATH = "/shaders";
 const std::string TEXTURE_PATH = "/textures";
 const std::string FONT_PATH = "/fonts";
+const std::string MODEL_PATH = "/models/";
 
 //Global variables go here 
 //Pointer to our SDL Windows
