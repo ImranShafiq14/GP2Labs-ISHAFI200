@@ -105,6 +105,8 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\assets\shaders\ambientFS.glsl" />
+    <None Include="..\assets\shaders\ambientVS.glsl" />
     <None Include="assets\shaders\simpleFS.glsl" />
     <None Include="assets\shaders\simpleVS.glsl" />
     <None Include="assets\shaders\textureFS.glsl" />
