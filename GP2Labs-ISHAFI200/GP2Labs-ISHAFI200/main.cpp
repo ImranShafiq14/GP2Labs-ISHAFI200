@@ -16,6 +16,7 @@
 #include <glm/glm.hpp>
 using glm::mat4;
 using glm::vec3;
+using glm::vec4;
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -152,6 +153,8 @@ GLuint indices[] = {
 vector<GameObject*> displayList;
 GameObject *mainCamera;
 
+vec4 ambientLightColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
 //Global functions
 void InitWindow(int width, int height, bool fullscreen)
 {
@@ -270,9 +273,17 @@ void renderGameObject(GameObject *pObject)
 		currentMaterial->Bind();
 	
 		GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
+		GLint ambientMatLocation = currentMaterial->getUniformLocation("ambientMaterialColour");
+		GLint ambientLightLocation = currentMaterial->getUniformLocation("ambientLightColour");
+		
 		Camera *cam = mainCamera->getCamera();
 		mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
+		
+		vec4 ambientMaterialColour = currentMaterial->getAmbientColour();
+
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform4fv(ambientMatLocation, 1, glm::value_ptr(ambientMaterialColour));
+		glUniform4fv(ambientLightLocation, 1, glm::value_ptr(ambientLightColour));
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
 	}
@@ -333,8 +344,8 @@ void initialise()
 	cube->setTransform(transform);
 	
 	Material * material = new Material();
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/ambientVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/ambientFS.glsl";
 	material->loadShader(vsPath, fsPath);
 	cube->setMaterial(material);
 	
@@ -354,8 +365,8 @@ void initialise()
 	{
 		Material * material = new Material();
 		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/simpleVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/simpleFS.glsl";
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/ambientVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/ambientFS.glsl";
 		material->loadShader(vsPath, fsPath);
 		go->getChild(i)->setMaterial(material);
 	}

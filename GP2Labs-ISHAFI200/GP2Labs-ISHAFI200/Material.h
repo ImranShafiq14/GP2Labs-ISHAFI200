@@ -5,6 +5,9 @@
 #include <string>
 #include <GL\glew.h>
 
+#include <glm/glm.hpp>
+using glm::vec4;
+
 using namespace std;
 
 class Material : public Component
@@ -17,8 +20,13 @@ public:
 	bool loadShader(const string& vertexShader, const string& fragmentShader);
 	void Bind();
 	GLint getUniformLocation(const string& name);
+
+	vec4& getAmbientColour();
+	void setAmbientColour(float r, float g, float b, float a);
 private:
 	GLuint m_ShaderProgram;
+
+	vec4 m_AmbientColour;
 };
 
 #endif 
