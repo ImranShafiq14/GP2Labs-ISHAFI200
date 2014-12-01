@@ -93,5 +93,7 @@
     <None Include="..\assets\shaders\ambientFS.glsl" />
     <None Include="..\assets\shaders\diffuseFS.glsl" />
     <None Include="..\assets\shaders\diffuseVS.glsl" />
+    <None Include="..\assets\shaders\specularFS.glsl" />
+    <None Include="..\assets\shaders\specularVS.glsl" />
   </ItemGroup>
 </Project>

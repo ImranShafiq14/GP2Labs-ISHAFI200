@@ -273,33 +273,45 @@ void renderGameObject(GameObject *pObject)
 	{
 		currentMesh->Bind();
 		currentMaterial->Bind();
-	
+
 		GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
-		GLint ModelLocation = currentMaterial->getUniformLocation("Model");
 		GLint ambientMatLocation = currentMaterial->getUniformLocation("ambientMaterialColour");
 		GLint ambientLightLocation = currentMaterial->getUniformLocation("ambientLightColour");
+		GLint ModelLocation = currentMaterial->getUniformLocation("Model");
 		GLint diffuseMatLocation = currentMaterial->getUniformLocation("diffuseMaterialColour");
 		GLint diffuseLightLocation = currentMaterial->getUniformLocation("diffuseLightColour");
-		GLint lightDirectionLocation = currentMaterial->getUniformLocation("lightDirection");
-
+		GLint lightDirLocation = currentMaterial->getUniformLocation("lightDirection");
+		GLint cameraPosLocation = currentMaterial->getUniformLocation("cameraPosition");
+		GLint specularMatLocation = currentMaterial->getUniformLocation("specularMaterialColour");
+		GLint specularPowerLocation = currentMaterial->getUniformLocation("specularPower");
+		GLint specularLightLocation = currentMaterial->getUniformLocation("specularLightColour");
+		
 		Camera *cam = mainCamera->getCamera();
-		Light* light = mainLight->getLight();
-
+		Light * light = mainLight->getLight();
+		
 		mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
-		mat4 Model = currentTransform->getModel();
-
 		vec4 ambientMaterialColour = currentMaterial->getAmbientColour();
+		mat4 Model = currentTransform->getModel();
 		vec4 diffuseMaterialColour = currentMaterial->getDiffuseColour();
 		vec4 diffuseLightColour = light->getDiffuseColour();
 		vec3 lightDirection = light->getLightDirection();
-
-		glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(Model));
+		vec4 specularLightColour = light->getSpecularColour();
+		vec4 specularMaterialColour = currentMaterial->getSpecularColour();
+		float specularPower = currentMaterial->getSpecularPower();
+		vec3 cameraPosition = mainCamera->getTransform()->getPosition();
+	
 		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniform4fv(ambientMatLocation, 1, glm::value_ptr(ambientMaterialColour));
 		glUniform4fv(ambientLightLocation, 1, glm::value_ptr(ambientLightColour));
+		glUniformMatrix4fv(ModelLocation, 1, GL_FALSE, glm::value_ptr(Model));
 		glUniform4fv(diffuseMatLocation, 1, glm::value_ptr(diffuseMaterialColour));
 		glUniform4fv(diffuseLightLocation, 1, glm::value_ptr(diffuseLightColour));
-		glUniform3fv(lightDirectionLocation, 1, glm::value_ptr(lightDirection));
+		glUniform3fv(lightDirLocation, 1, glm::value_ptr(lightDirection));
+		
+		glUniform4fv(specularMatLocation, 1, glm::value_ptr(specularMaterialColour));
+		glUniform4fv(specularLightLocation, 1, glm::value_ptr(specularLightColour));
+		glUniform3fv(cameraPosLocation, 1, glm::value_ptr(cameraPosition));
+		glUniform1f(specularPowerLocation, specularPower);
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
 	}
@@ -371,8 +383,8 @@ void initialise()
 	cube->setTransform(transform);
 	
 	Material * material = new Material();
-	std::string vsPath = ASSET_PATH + SHADER_PATH + "/diffuseVS.glsl";
-	std::string fsPath = ASSET_PATH + SHADER_PATH + "/diffuseFS.glsl";
+	std::string vsPath = ASSET_PATH + SHADER_PATH + "/specularVS.glsl";
+	std::string fsPath = ASSET_PATH + SHADER_PATH + "/specularFS.glsl";
 	material->loadShader(vsPath, fsPath);
 	cube->setMaterial(material);
 	
@@ -392,8 +404,8 @@ void initialise()
 	{
 		Material * material = new Material();
 		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/diffuseVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/diffuseFS.glsl";
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/specularVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/specularFS.glsl";
 		material->loadShader(vsPath, fsPath);
 		go->getChild(i)->setMaterial(material);
 	}
