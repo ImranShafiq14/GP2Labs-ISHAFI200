@@ -35,6 +35,9 @@ public:
 
 	GLuint getDiffuseMap();
 	void loadDiffuseMap(const std::string& filename);
+
+	GLuint getSpecularMap();
+	void loadSpecularMap(const std::string& filename);
 private:
 	GLuint m_ShaderProgram;
 
@@ -44,6 +47,7 @@ private:
 	float m_SpecularPower;
 
 	GLuint m_DiffuseMap;
+	GLuint m_SpecularMap;
 };
 
 #endif 

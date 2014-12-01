@@ -12,6 +12,7 @@ Material::Material()
 	m_SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularPower = 200.0f;
 	m_DiffuseMap = 0;
+	m_SpecularMap = 0;
 
 	//Brian's values used in his code - try these values if difficult to see right effect.
 	/*m_AmbientColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -29,6 +30,7 @@ void Material::destroy()
 {
 	glDeleteProgram(m_ShaderProgram);
 	glDeleteTextures(1, &m_DiffuseMap);
+	glDeleteTextures(1, &m_SpecularMap);
 }
 
 bool Material::loadShader(const string& vertexShader, const string& fragmentShader)
@@ -65,6 +67,9 @@ void Material::Bind()
 	glUseProgram(m_ShaderProgram);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_DiffuseMap);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_SpecularMap);
 }
 
 GLint Material::getUniformLocation(const string& name)
@@ -121,4 +126,14 @@ GLuint Material::getDiffuseMap()
 void Material::loadDiffuseMap(const std::string& filename)
 {
 	m_DiffuseMap = loadTextureFromFile(filename);
+}
+
+GLuint Material::getSpecularMap()
+{
+	return m_SpecularMap;
+}
+
+void Material::loadSpecularMap(const std::string& filename)
+{
+	m_SpecularMap = loadTextureFromFile(filename);
 }
