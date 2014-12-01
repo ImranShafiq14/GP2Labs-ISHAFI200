@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "Camera.h"
 #include "Transform.h"
+#include "Light.h"
 
 
 GameObject::GameObject()
@@ -13,6 +14,7 @@ GameObject::GameObject()
 	m_Material = NULL;
 	m_Camera = NULL;
 	m_Transform = NULL;
+	m_Light = NULL;
 	m_Parent = NULL;
 }
 
@@ -155,6 +157,17 @@ void GameObject::setTransform(Transform * transform)
 Transform * GameObject::getTransform()
 {
 	return m_Transform;
+}
+
+void GameObject::setLight(Light * light)
+{
+	m_Light = light;
+	addComponent(m_Light);
+}
+
+Light * GameObject::getLight()
+{
+	return m_Light;
 }
 
 void GameObject::setParent(GameObject* parent)
