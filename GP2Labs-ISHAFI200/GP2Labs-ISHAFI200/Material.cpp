@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "Shader.h"
+#include "Texture.h"
 
 Material::Material()
 {
@@ -9,6 +10,7 @@ Material::Material()
 	m_DiffuseColour = vec4(0.75f, 0.75f, 0.75f, 1.0f);
 	m_SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularPower = 200.0f;
+	m_DiffuseMap = 0;
 }
 
 Material::~Material()
@@ -19,6 +21,7 @@ Material::~Material()
 void Material::destroy()
 {
 	glDeleteProgram(m_ShaderProgram);
+	glDeleteTextures(1, &m_DiffuseMap);
 }
 
 bool Material::loadShader(const string& vertexShader, const string& fragmentShader)
@@ -53,6 +56,8 @@ bool Material::loadShader(const string& vertexShader, const string& fragmentShad
 void Material::Bind()
 {
 	glUseProgram(m_ShaderProgram);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_DiffuseMap);
 }
 
 GLint Material::getUniformLocation(const string& name)
@@ -99,4 +104,14 @@ float Material::getSpecularPower()
 void Material::setSpecularPower(float power)
 {
 	m_SpecularPower = power;
+}
+
+GLuint Material::getDiffuseMap()
+{
+	return m_DiffuseMap;
+}
+
+void Material::loadDiffuseMap(const std::string& filename)
+{
+	m_DiffuseMap = loadTextureFromFile(filename);
 }
