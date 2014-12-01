@@ -7,10 +7,17 @@ Material::Material()
 	m_Type = "Material";
 	m_ShaderProgram = -1;
 	m_AmbientColour = vec4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_DiffuseColour = vec4(0.75f, 0.75f, 0.75f, 1.0f);
+	//m_DiffuseColour = vec4(0.75f, 0.75f, 0.75f, 1.0f);
+	m_DiffuseColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	m_SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularPower = 200.0f;
 	m_DiffuseMap = 0;
+
+	//Brian's values used in his code - try these values if difficult to see right effect.
+	/*m_AmbientColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_DiffuseColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_SpecularColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_SpecularPower = 10.0f;*/
 }
 
 Material::~Material()
