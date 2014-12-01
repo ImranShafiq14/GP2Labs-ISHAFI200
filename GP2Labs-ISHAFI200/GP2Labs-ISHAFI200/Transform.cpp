@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "GameObject.h"
 
 Transform::Transform()
 {
@@ -19,13 +20,19 @@ void Transform::update()
 	{
 		mat4 translate = glm::translate(mat4(1.0f), m_Position);
 		mat4 scale = glm::scale(mat4(1.0f), m_Scale);
-		
+
 		mat4 rotationX = glm::rotate(mat4(1.0f), m_Rotation.x, vec3(1.0f, 0.0f, 0.0f));
 		mat4 rotationY = glm::rotate(mat4(1.0f), m_Rotation.y, vec3(0.0f, 1.0f, 0.0f));
 		mat4 rotationZ = glm::rotate(mat4(1.0f), m_Rotation.z, vec3(0.0f, 0.0f, 1.0f));
 		mat4 rotation = rotationX * rotationY * rotationZ;
-		
+
 		m_Model = translate * rotation * scale;
+	}
+
+	if (m_Parent->getParent())
+	{
+		//m_Model = m_Parent->getParent()->getTransform()->getModel()*m_Model;
+		m_Model *= m_Parent->getTransform()->getModel();
 	}
 }
 
