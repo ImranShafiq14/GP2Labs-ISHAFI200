@@ -252,31 +252,47 @@ void setViewport(int width, int height)
 	glViewport(0, 0, (GLsizei)width, (GLsizei)height);
 }
 
+void renderGameObject(GameObject *pObject)
+{
+	if (!pObject)
+	{
+		return;
+	}
+
+	pObject->render();
+	Mesh * currentMesh = pObject->getMesh();
+	Transform * currentTransform = pObject->getTransform();
+	Material * currentMaterial = pObject->getMaterial();
+	
+	if (currentMesh && currentMaterial && currentTransform)
+	{
+		currentMesh->Bind();
+		currentMaterial->Bind();
+	
+		GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
+		Camera *cam = mainCamera->getCamera();
+		mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
+		glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
+		
+		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
+	}
+	
+	for (int i = 0; i < pObject->getChildCount(); i++)
+	{
+		renderGameObject(pObject->getChild(i));
+	}
+}
+
 //Function to draw
 void render()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	for (auto iter = displayList.begin(); iter != displayList.end(); iter++)
 	{
-		(*iter)->render();
-		Mesh * currentMesh = (*iter)->getMesh();
-		Transform * currentTransform = (*iter)->getTransform();
-		Material * currentMaterial = (*iter)->getMaterial();
-
-		if (currentMesh && currentMaterial && currentTransform)
-		{
-			currentMesh->Bind();
-			currentMaterial->Bind();
-
-			GLint MVPLocation = currentMaterial->getUniformLocation("MVP");
-			Camera *cam = mainCamera->getCamera();
-			mat4 MVP = cam->getProjectMatrix()*cam->getViewMatrix()*currentTransform->getModel();
-			glUniformMatrix4fv(MVPLocation, 1, GL_FALSE, glm::value_ptr(MVP));
-
-			glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
-		}
+		renderGameObject((*iter));
 	}
 	SDL_GL_SwapWindow(window);
 }
