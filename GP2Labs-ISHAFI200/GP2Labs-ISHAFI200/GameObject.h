@@ -27,15 +27,21 @@ public:
 	void setName(const std::string& name);
 	void addComponent(Component * component);
 
+	void addChild(GameObject* child);
+	int getChildCount();
+
 	Mesh * getMesh();
 	Material * getMaterial();
 	Camera * getCamera();
 	Transform * getTransform();
+	GameObject* getParent();
+	GameObject* getChild(int index);
 
 	void setMesh(Mesh * mesh);
 	void setMaterial(Material * material);
 	void setCamera(Camera * camera);
 	void setTransform(Transform * transform);
+	void setParent(GameObject* parent);
 protected:
 private:
 	std::string m_Name;
@@ -45,6 +51,9 @@ private:
 	Material *m_Material;
 	Camera *m_Camera;
 	Transform *m_Transform;
+
+	GameObject* m_Parent;
+	vector<GameObject*> m_Children;
 
 };
 
