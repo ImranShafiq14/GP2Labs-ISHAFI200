@@ -99,5 +99,7 @@
     <None Include="..\assets\shaders\directionalLightTextureVS.glsl" />
     <None Include="..\assets\shaders\specularFSPerPixel.glsl" />
     <None Include="..\assets\shaders\specularVSPerPixel.glsl" />
+    <None Include="..\assets\shaders\visualisationFS.glsl" />
+    <None Include="..\assets\shaders\visualisationVS.glsl" />
   </ItemGroup>
 </Project>
