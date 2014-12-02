@@ -409,6 +409,21 @@ void initialise()
 	{
 		Material * material = new Material();
 		material->init();
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/specularVSPerPixel.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/specularFSPerPixel.glsl";
+		material->loadShader(vsPath, fsPath);
+
+		go->getChild(i)->setMaterial(material);
+	}
+	go->getTransform()->setPosition(0.0f, 0.0f, -10.0f);
+	displayList.push_back(go);
+
+	/*std::string modelPath = ASSET_PATH + MODEL_PATH + "armoredrecon.fbx";
+	GameObject * go = loadFBXFromFile(modelPath);
+	for (int i = 0; i < go->getChildCount(); i++)
+	{
+		Material * material = new Material();
+		material->init();
 		std::string vsPath = ASSET_PATH + SHADER_PATH + "/directionalLightTextureVS.glsl";
 		std::string fsPath = ASSET_PATH + SHADER_PATH + "/directionalLightTextureFS.glsl";
 		material->loadShader(vsPath, fsPath);
@@ -422,7 +437,7 @@ void initialise()
 		go->getChild(i)->setMaterial(material);
 	}
 	go->getTransform()->setPosition(2.0f, -2.0f, -6.0f);
-	displayList.push_back(go);
+	displayList.push_back(go);*/
 	
 	//mesh->copyVertexData(8, sizeof(Vertex), (void**)(triangleData));
 	//mesh->copyIndexData(36, sizeof(int), (void**)(indices));
