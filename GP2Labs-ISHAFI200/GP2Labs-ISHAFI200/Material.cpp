@@ -1,25 +1,15 @@
 #include "Material.h"
 #include "Shader.h"
-#include "Texture.h"
+#include "Vertex.h"
 
 Material::Material()
 {
-	m_Type = "Material";
 	m_ShaderProgram = -1;
+	m_Type = "Material";
 	m_AmbientColour = vec4(0.5f, 0.5f, 0.5f, 1.0f);
-	//m_DiffuseColour = vec4(0.75f, 0.75f, 0.75f, 1.0f);
-	m_DiffuseColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	//m_SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_SpecularColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_DiffuseColour = vec4(0.75f, 0.75f, 0.75f, 1.0f);
+	m_SpecularColour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_SpecularPower = 200.0f;
-	m_DiffuseMap = 0;
-	m_SpecularMap = 0;
-
-	//Brian's values used in his code - try these values if difficult to see right effect.
-	/*m_AmbientColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	m_DiffuseColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	m_SpecularColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	m_SpecularPower = 10.0f;*/
 }
 
 Material::~Material()
@@ -30,53 +20,58 @@ Material::~Material()
 void Material::destroy()
 {
 	glDeleteProgram(m_ShaderProgram);
-	glDeleteTextures(1, &m_DiffuseMap);
-	glDeleteTextures(1, &m_SpecularMap);
-}
-
-bool Material::loadShader(const string& vertexShader, const string& fragmentShader)
-{
-	GLuint vertexShaderProgram = 0;
-	std::string vsPath = vertexShader;
-	vertexShaderProgram = loadShaderFromFile(vsPath, VERTEX_SHADER);
-	//vertexShaderProgram = loadShaderFromFile(const_cast<std::string&>(vertexShader), VERTEX_SHADER);
-	
-	GLuint fragmentShaderProgram = 0;
-	std::string fsPath = fragmentShader;
-	fragmentShaderProgram = loadShaderFromFile(fsPath, FRAGMENT_SHADER);
-	//fragmentShaderProgram = loadShaderFromFile(const_cast<std::string&>(fragmentShader), FRAGMENT_SHADER);
-	
-	m_ShaderProgram = glCreateProgram();
-	glAttachShader(m_ShaderProgram, vertexShaderProgram);
-	glAttachShader(m_ShaderProgram, fragmentShaderProgram);
-	glLinkProgram(m_ShaderProgram);
-	checkForLinkErrors(m_ShaderProgram);
-	
-	//now we can delete the VS & FS Programs
-	glDeleteShader(vertexShaderProgram);
-	glDeleteShader(fragmentShaderProgram);
-	
-	glBindAttribLocation(m_ShaderProgram, 0, "vertexPosition");
-	glBindAttribLocation(m_ShaderProgram, 1, "vertexNormals");
-	glBindAttribLocation(m_ShaderProgram, 2, "vertexTexCoords");
-	
-	return true;
 }
 
 void Material::Bind()
 {
 	glUseProgram(m_ShaderProgram);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_DiffuseMap);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_SpecularMap);
+	GLint vertexPosLoc = glGetAttribLocation(m_ShaderProgram, "vertexPosition");
+	GLint vertexMormalsLoc = glGetAttribLocation(m_ShaderProgram, "vertexNormals");
+	glEnableVertexAttribArray(vertexPosLoc);
+	glVertexAttribPointer(vertexPosLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+	glEnableVertexAttribArray(vertexMormalsLoc);
+	glVertexAttribPointer(vertexMormalsLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
 }
 
-GLint Material::getUniformLocation(const string& name)
+bool Material::loadShader(const std::string& vsFilename, const std::string& fsFilename)
 {
-	GLint MVPLocation = glGetUniformLocation(m_ShaderProgram, name.c_str());
-	return MVPLocation;
+	GLuint vertexShaderProgram = 0;
+	vertexShaderProgram = loadShaderFromFile(const_cast<std::string&>(vsFilename), VERTEX_SHADER);
+
+	GLuint fragmentShaderProgram = 0;
+	fragmentShaderProgram = loadShaderFromFile(const_cast<std::string&>(fsFilename), FRAGMENT_SHADER);
+
+	m_ShaderProgram = glCreateProgram();
+	glAttachShader(m_ShaderProgram, vertexShaderProgram);
+	glAttachShader(m_ShaderProgram, fragmentShaderProgram);
+	glLinkProgram(m_ShaderProgram);
+	checkForLinkErrors(m_ShaderProgram);
+
+	//now we can delete the VS & FS Programs
+	glDeleteShader(vertexShaderProgram);
+	glDeleteShader(fragmentShaderProgram);
+
+	GLint vertexPosLoc = glGetAttribLocation(m_ShaderProgram, "vertexPosition");
+	GLint vertexMormalsLoc = glGetAttribLocation(m_ShaderProgram, "vertexNormals");
+
+	glBindAttribLocation(m_ShaderProgram, vertexPosLoc, "vertexPosition");
+	glBindAttribLocation(m_ShaderProgram, vertexMormalsLoc, "vertexNormals");
+	//glBindAttribLocation(m_ShaderProgram,2, "vertexTexCoords");
+	//glBindAttribLocation(m_ShaderProgram, 3, "vertexColour");
+
+	//Tell the shader that 0 is the position element
+
+	//glEnableVertexAttribArray(2);
+	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec3)));
+	//glEnableVertexAttribArray(3);
+	//glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec3) + sizeof(vec2)));
+
+	return true;
+}
+
+GLint Material::getUniformLocation(const std::string& name)
+{
+	return glGetUniformLocation(m_ShaderProgram, name.c_str());
 }
 
 vec4& Material::getAmbientColour()
@@ -117,24 +112,4 @@ float Material::getSpecularPower()
 void Material::setSpecularPower(float power)
 {
 	m_SpecularPower = power;
-}
-
-GLuint Material::getDiffuseMap()
-{
-	return m_DiffuseMap;
-}
-
-void Material::loadDiffuseMap(const std::string& filename)
-{
-	m_DiffuseMap = loadTextureFromFile(filename);
-}
-
-GLuint Material::getSpecularMap()
-{
-	return m_SpecularMap;
-}
-
-void Material::loadSpecularMap(const std::string& filename)
-{
-	m_SpecularMap = loadTextureFromFile(filename);
 }
