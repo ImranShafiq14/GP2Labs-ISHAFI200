@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "Shader.h"
+#include "Vertex.h"
 
 Material::Material()
 {
@@ -42,18 +43,33 @@ bool Material::loadShader(const string& vertexShader, const string& fragmentShad
 	//now we can delete the VS & FS Programs
 	glDeleteShader(vertexShaderProgram);
 	glDeleteShader(fragmentShaderProgram);
-	
-	glBindAttribLocation(m_ShaderProgram, 0, "vertexPosition");
-	glBindAttribLocation(m_ShaderProgram, 1, "vertexNormals");
-	glBindAttribLocation(m_ShaderProgram, 2, "vertexTexCoords");
-	glBindAttribLocation(m_ShaderProgram, 3, "vertexColour");
-	
+		
 	return true;
 }
 
 void Material::Bind()
 {
 	glUseProgram(m_ShaderProgram);
+
+	GLint vertexPosLocation = glGetAttribLocation(m_ShaderProgram, "vertexPosition");
+	GLint vertexNormalsLocation = glGetAttribLocation(m_ShaderProgram, "vertexNormals");
+	GLint vertexTexLocation = glGetAttribLocation(m_ShaderProgram, "vertexTexCoords");
+	GLint vertexColourLocation = glGetAttribLocation(m_ShaderProgram, "vertexColour");
+
+	glBindAttribLocation(m_ShaderProgram, vertexPosLocation, "vertexPosition");
+	glBindAttribLocation(m_ShaderProgram, vertexNormalsLocation, "vertexNormals");
+	glBindAttribLocation(m_ShaderProgram, vertexTexLocation, "vertexTexCoords");
+	glBindAttribLocation(m_ShaderProgram, vertexColourLocation, "vertexColour");
+
+	//Tell the shader that 0 is the position element
+	glEnableVertexAttribArray(vertexPosLocation);
+	glVertexAttribPointer(vertexPosLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+	glEnableVertexAttribArray(vertexNormalsLocation);
+	glVertexAttribPointer(vertexNormalsLocation, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)sizeof(vec3));
+	glEnableVertexAttribArray(vertexTexLocation);
+	glVertexAttribPointer(vertexTexLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec2)));
+	glEnableVertexAttribArray(vertexColourLocation);
+	glVertexAttribPointer(vertexColourLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void**)(sizeof(vec3) + sizeof(vec3) + sizeof(vec2)));
 }
 
 GLint Material::getUniformLocation(const string& name)
