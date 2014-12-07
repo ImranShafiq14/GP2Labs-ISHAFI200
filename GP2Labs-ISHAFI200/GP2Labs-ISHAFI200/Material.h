@@ -38,6 +38,9 @@ public:
 
 	GLuint getSpecularMap();
 	void loadSpecularMap(const std::string& filename);
+
+	GLuint getBumpMap();
+	void loadBumpMap(const std::string& filename);
 private:
 	GLuint m_ShaderProgram;
 
@@ -48,6 +51,7 @@ private:
 
 	GLuint m_DiffuseMap;
 	GLuint m_SpecularMap;
+	GLuint m_BumpMap;
 };
 
 #endif 

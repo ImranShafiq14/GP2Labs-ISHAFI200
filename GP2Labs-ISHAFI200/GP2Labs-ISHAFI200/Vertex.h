@@ -13,6 +13,9 @@ struct Vertex
 	vec3 position;
 	vec3 normal;
 	vec2 texCoords;
+	vec4 colours;
+	vec3 tangentNormals;
+	vec3 binormals;
 };
 
 

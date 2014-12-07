@@ -42,10 +42,10 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
+    <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="FBXLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,10 +77,10 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
+    <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="FBXLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -97,5 +97,7 @@
     <None Include="..\assets\shaders\specularVS.glsl" />
     <None Include="..\assets\shaders\directionalLightTextureFS.glsl" />
     <None Include="..\assets\shaders\directionalLightTextureVS.glsl" />
+    <None Include="..\assets\shaders\bumpMappingFS.glsl" />
+    <None Include="..\assets\shaders\bumpMappingVS.glsl" />
   </ItemGroup>
 </Project>

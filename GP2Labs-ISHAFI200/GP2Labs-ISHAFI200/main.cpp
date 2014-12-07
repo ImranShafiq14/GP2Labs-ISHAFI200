@@ -287,6 +287,7 @@ void renderGameObject(GameObject *pObject)
 		GLint specularLightLocation = currentMaterial->getUniformLocation("specularLightColour");
 		GLint diffuseTextureLocation = currentMaterial->getUniformLocation("diffuseMap");
 		GLint specularTextureLocation = currentMaterial->getUniformLocation("specMap");
+		GLint bumpTextureLocation = currentMaterial->getUniformLocation("bumpMap");
 
 		Camera *cam = mainCamera->getCamera();
 		Light * light = mainLight->getLight();
@@ -317,6 +318,7 @@ void renderGameObject(GameObject *pObject)
 
 		glUniform1i(diffuseTextureLocation, 0);
 		glUniform1i(specularTextureLocation, 1);
+		glUniform1i(bumpTextureLocation, 2);
 		
 		glDrawElements(GL_TRIANGLES, currentMesh->getIndexCount(), GL_UNSIGNED_INT, 0);
 	}
@@ -409,8 +411,8 @@ void initialise()
 	{
 		Material * material = new Material();
 		material->init();
-		std::string vsPath = ASSET_PATH + SHADER_PATH + "/directionalLightTextureVS.glsl";
-		std::string fsPath = ASSET_PATH + SHADER_PATH + "/directionalLightTextureFS.glsl";
+		std::string vsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingVS.glsl";
+		std::string fsPath = ASSET_PATH + SHADER_PATH + "/bumpMappingFS.glsl";
 		material->loadShader(vsPath, fsPath);
 
 		std::string diffTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_diff.png";
@@ -418,6 +420,9 @@ void initialise()
 
 		std::string specTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_spec.png";
 		material->loadSpecularMap(specTexturePath);
+
+		std::string bumpTexturePath = ASSET_PATH + TEXTURE_PATH + "/armoredrecon_N.png";
+		material->loadBumpMap(bumpTexturePath);
 
 		go->getChild(i)->setMaterial(material);
 	}
